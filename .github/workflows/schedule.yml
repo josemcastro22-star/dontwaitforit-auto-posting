@@ -1,1 +1,32 @@
+name: Scheduled Instagram Post
 
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Tue + Thu at 1:00 PM America/New_York during DST (17:00 UTC)
+    - cron: "0 13 * * 2,4"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pillow
+
+      - name: Run script
+        env:
+          ANTHROPIC_API_KEY: $ secrets.ANTHROPIC_API_KEY 
+          IG_USER_ID: $ secrets.IG_USER_ID 
+          IG_ACCESS_TOKEN: $ secrets.IG_ACCESS_TOKEN 
+        run: |
+          python post.py
