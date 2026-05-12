@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
   schedule:
     # Tue + Thu at 1:00 PM America/New_York during DST (17:00 UTC)
-    - cron: "0 13 * * 2,4"
+    - cron: "0 17 * * 2,4"
 
 jobs:
   run:
@@ -26,6 +26,6 @@ jobs:
       - name: Run script
         env:
           IG_USER_ID: $ secrets.IG_USER_ID 
-          IG_ACCESS_TOKEN: $ secrets.IG_ACCESS_TOKEN
+          IG_ACCESS_TOKEN: $ secrets.IG_ACCESS_TOKEN 
         run: |
           python post.py
