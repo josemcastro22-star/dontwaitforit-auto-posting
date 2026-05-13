@@ -5,6 +5,8 @@ on:
   schedule:
     # Tue + Thu at 1:00 PM America/New_York during DST (17:00 UTC)
     - cron: "0 17 * * 2,4"
+permissions:
+  contents: write
 
 jobs:
   run:
