@@ -28,10 +28,10 @@ jobs:
 
       - name: Run script
         env:
-          IG_USER_ID: $secrets.IG_USER_ID
-          IG_ACCESS_TOKEN: $secrets.IG_ACCESS_TOKEN
-          ANTHROPIC_API_KEY: $secrets.ANTHROPIC_API_KEY
+          IG_USER_ID: $ secrets.IG_USER_ID 
+          IG_ACCESS_TOKEN: $ secrets.IG_ACCESS_TOKEN 
+          ANTHROPIC_API_KEY: $ secrets.ANTHROPIC_API_KEY 
           PAGES_BASE_URL: https://josemcastro22-star.github.io/dontwaitforit-auto-posting
-          GITHUB_TOKEN: $secrets.GITHUB_TOKEN
+          GITHUB_TOKEN: $ github.token 
         run: |
           python post.py
