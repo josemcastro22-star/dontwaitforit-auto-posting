@@ -35,7 +35,7 @@ def anthropic_generate(api_key: str) -> dict:
     """
     url = "https://api.anthropic.com/v1/messages"
     headers = {
-        "x-api-key": api_key,
+        "x-api-key": api_key.strip(),
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
     }
@@ -229,7 +229,7 @@ def ig_publish(ig_user_id: str, access_token: str, creation_id: str) -> str:
 def main():
     ig_user_id = require_env("IG_USER_ID")
     ig_access_token = require_env("IG_ACCESS_TOKEN")
-    anthropic_key = require_env("ANTHROPIC_API_KEY")
+    anthropic_key = require_env("ANTHROPIC_API_KEY").strip()
     pages_base = require_env("PAGES_BASE_URL").rstrip("/")
 
     payload = anthropic_generate(anthropic_key)
