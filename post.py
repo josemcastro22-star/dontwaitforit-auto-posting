@@ -230,6 +230,8 @@ def main():
     ig_user_id = require_env("IG_USER_ID")
     ig_access_token = require_env("IG_ACCESS_TOKEN")
     anthropic_key = require_env("ANTHROPIC_API_KEY").strip()
+    print("Anthropic key length:", len(anthropic_key))
+    print("Anthropic key prefix:", anthropic_key[:7])  # should be 'sk-ant-'
     pages_base = require_env("PAGES_BASE_URL").rstrip("/")
 
     payload = anthropic_generate(anthropic_key)
