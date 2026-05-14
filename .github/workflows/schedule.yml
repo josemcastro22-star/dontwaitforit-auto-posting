@@ -1,4 +1,4 @@
-name: Scheduled Instagram Post
+name: List Anthropic Models
 
 on:
   workflow_dispatch: {}
@@ -9,8 +9,10 @@ jobs:
     steps:
       - name: List Anthropic models
         env:
-          ANTHROPIC_API_KEY: $ secrets.ANTHROPIC_API_KEY 
+          ANTHROPIC_API_KEY: ${{secrets.ANTHROPIC_API_KEY}} 
         run: |
+          echo "Key prefix: ${ANTHROPIC_API_KEY:0:7}"
+          echo "Key length: ${#ANTHROPIC_API_KEY}"
           curl -s https://api.anthropic.com/v1/models \
             -H "x-api-key: $ANTHROPIC_API_KEY" \
             -H "anthropic-version: 2023-06-01"
