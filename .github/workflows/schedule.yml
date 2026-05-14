@@ -22,6 +22,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests pillow
 
+      - name: List Anthropic models (temporary)
+        env:
+          ANTHROPIC_API_KEY: $ secrets.ANTHROPIC_API_KEY 
+        run: |
+          curl -s https://api.anthropic.com/v1/models \
+          -H "x-api-key: $ANTHROPIC_API_KEY" \
+          -H "anthropic-version: 2023-06-01" | head -c 12000
+
       - name: Run script
         env:
           IG_USER_ID: ${{secrets.IG_USER_ID}}
