@@ -73,69 +73,65 @@ def anthropic_generate(api_key: str) -> dict:
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
     }
-    
-    theme_name, theme_instructions = weekday_theme()
-    
-    prompt = f"""
-    You are generating ONE Instagram post for a nonprofit Instagram account focused on SCI/paralysis recovery.
-    
-    THEME FOR TODAY: {theme_name}
-    {theme_instructions}
-    
-    Topic alignment:
-    - {TOPIC_FOCUS}
-    
-    Style:
-    - {STYLE_GUIDELINES}
-    
-    Hard requirements:
-    - Choose ONE timely, reputable topic aligned with THEME FOR TODAY.
-    - Provide:
-      1) headline (max 6 words)
-      2) big_stat (a single short stat/claim, max ~8 words, must be sourceable)
-      3) bullets (exactly 3 bullets, each <= 12 words)
-      4) source_line (very short, for the bottom of the image, e.g. "Source: Nature (2024)")
-      5) caption (<= 1500 chars, include 3–8 hashtags, include 1–3 source links)
-    - Avoid claiming cures. Avoid diagnosis/treatment instructions.
-    - Make it visually punchy and scroll-stopping.
-    
-    Return ONLY raw JSON (no markdown fences/backticks, no commentary) with keys:
-    headline, big_stat, bullets, source_line, caption
-    """.strip()
-    
-        body = {
-            "model": "claude-sonnet-4-6",
-            "max_tokens": 800,
-            "temperature": 0.7,
-            "messages": [{"role": "user", "content": prompt}],
-        }
-    
-        r = requests.post(url, headers=headers, data=json.dumps(body), timeout=60)
-        if r.status_code != 200:
-            raise RuntimeError(f"Anthropic API error {r.status_code}: {r.text}")
-    
-        data = r.json()
-        text = "".join(
-            [p.get("text", "") for p in data.get("content", []) if p.get("type") == "text"]
-        ).strip()
-        
-        clean = text
-        
-        # Strip ```json ... ``` fences if present
-        if "```" in clean:
-            parts = clean.split("```")
-            if len(parts) >= 2:
-                clean = parts[1].lstrip()
-                if clean.lower().startswith("json"):
-                    clean = clean[4:].lstrip()
-        
-        clean = clean.strip()
-        
-        try:
-            return json.loads(clean)
-        except Exception:
-            raise RuntimeError(f"Claude did not return valid JSON. Got:\n{text}")
 
+    theme_name, theme_instructions = weekday_theme()
+
+    prompt = f"""
+You are generating ONE Instagram post for a nonprofit Instagram account focused on SCI/paralysis recovery.
+
+THEME FOR TODAY: {theme_name}
+{theme_instructions}
+
+Topic alignment:
+- {TOPIC_FOCUS}
+
+Style:
+- {STYLE_GUIDELINES}
+
+Hard requirements:
+- Choose ONE timely, reputable topic aligned with THEME FOR TODAY.
+- Provide:
+  1) headline (max 6 words)
+  2) big_stat (a single short stat/claim, max ~8 words, must be sourceable)
+  3) bullets (exactly 3 bullets, each <= 12 words)
+  4) source_line (very short, for the bottom of the image)
+  5) caption (<= 1500 chars, include 3–8 hashtags, include 1–3 source links)
+- Avoid claiming cures. Avoid diagnosis/treatment instructions.
+
+Return ONLY raw JSON (no markdown fences/backticks, no commentary) with keys:
+headline, big_stat, bullets, source_line, caption
+""".strip()
+
+    body = {
+        "model": "claude-sonnet-4-6",
+        "max_tokens": 800,
+        "temperature": 0.7,
+        "messages": [{"role": "user", "content": prompt}],
+    }
+
+    r = requests.post(url, headers=headers, data=json.dumps(body), timeout=60)
+    if r.status_code != 200:
+        raise RuntimeError(f"Anthropic API error {r.status_code}: {r.text}")
+
+    data = r.json()
+    text = "".join(
+        [p.get("text", "") for p in data.get("content", []) if p.get("type") == "text"]
+    ).strip()
+
+    clean = text
+    if "```" in clean:
+        parts = clean.split("```")
+        if len(parts) >= 2:
+            clean = parts[1].lstrip()
+            if clean.lower().startswith("json"):
+                clean = clean[4:].lstrip()
+    clean = clean.strip()
+
+    try:
+        return json.loads(clean)
+    except Exception:
+        raise RuntimeError(f"Claude did not return valid JSON. Got:\n{text}")
+        
 def load_font(size: int):
     # Ubuntu runner typically has DejaVu fonts.
     for path in [
