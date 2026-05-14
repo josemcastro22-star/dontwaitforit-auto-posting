@@ -65,7 +65,7 @@ headline, big_stat, bullets, source_line, caption
 """
 
     body = {
-        "model": "claude-3-5-sonnet-20241022",
+        "model": "claude-3-5-sonnet-20240620",
         "max_tokens": 800,
         "temperature": 0.7,
         "messages": [{"role": "user", "content": prompt}],
