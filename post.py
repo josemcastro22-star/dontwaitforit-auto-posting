@@ -3,6 +3,8 @@ import sys
 import json
 import time
 import subprocess
+import hashlib
+from zoneinfo import ZoneInfo
 from datetime import datetime, timezone
 
 import requests
@@ -29,6 +31,38 @@ def require_env(name: str) -> str:
         sys.exit(1)
     return v
 
+def weekday_theme():
+    now = datetime.now(ZoneInfo("America/New_York"))
+    wd = now.weekday()  # Mon=0 Tue=1 Wed=2 Thu=3 Fri=4 Sat=5 Sun=6
+
+    if wd == 0:
+        return "MINDSET", (
+            "Monday theme: Mindset & mental health for people impacted by spinal cord injuries/paralysis. "
+            "Supportive, hopeful, practical encouragement. Avoid medical/therapy directives. "
+            "Include a gentle resource line when appropriate."
+        )
+
+    if wd == 1:
+        return "DISCOVERY", (
+            "Tuesday theme: NEW research/discovery for SCI/paralysis recovery. "
+            "Prefer peer‑reviewed research, clinical trials, reputable institutions. "
+            "Explain what’s new + why it matters + include source links."
+        )
+
+    if wd == 2:
+        return "ADAPTIVE_EQUIPMENT", (
+            "Wednesday theme: Adaptive equipment / assistive tech for SCI—sports gear, wheelchair accessories, "
+            "daily-living tools, mobility add-ons. Prefer newly released/announced items. Include source links."
+        )
+
+    if wd == 3:
+        return "SCI_STATS", (
+            "Thursday theme: Spinal cord injury stats & awareness. Use one strong stat and cite reputable sources "
+            "(NSCISC, Reeve Foundation, NIH, CDC, etc.)."
+        )
+
+    return "GENERAL_SCI", "Default theme."
+
 def anthropic_generate(api_key: str) -> dict:
     """
     Uses Anthropic Messages API. Returns structured JSON for the post.
@@ -40,8 +74,13 @@ def anthropic_generate(api_key: str) -> dict:
         "content-type": "application/json",
     }
 
-    prompt = f"""
+theme_name, theme_instructions = weekday_theme()
+
+prompt = f"""
 You are generating ONE Instagram post for a nonprofit Instagram account focused on SCI/paralysis recovery.
+
+THEME FOR TODAY: {theme_name}
+{theme_instructions}
 
 Topic alignment:
 - {TOPIC_FOCUS}
@@ -50,7 +89,7 @@ Style:
 - {STYLE_GUIDELINES}
 
 Hard requirements:
-- Choose ONE timely, reputable topic.
+- Choose ONE timely, reputable topic aligned with THEME FOR TODAY.
 - Provide:
   1) headline (max 6 words)
   2) big_stat (a single short stat/claim, max ~8 words, must be sourceable)
@@ -60,9 +99,9 @@ Hard requirements:
 - Avoid claiming cures. Avoid diagnosis/treatment instructions.
 - Make it visually punchy and scroll-stopping.
 
-Return ONLY valid JSON with keys:
+Return ONLY raw JSON (no markdown fences/backticks, no commentary) with keys:
 headline, big_stat, bullets, source_line, caption
-"""
+""".strip()
 
     body = {
         "model": "claude-sonnet-4-6",
