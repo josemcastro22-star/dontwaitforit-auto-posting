@@ -24,7 +24,7 @@ jobs:
 
       - name: List Anthropic models (temporary)
         env:
-          ANTHROPIC_API_KEY: $ secrets.ANTHROPIC_API_KEY 
+          ANTHROPIC_API_KEY: ${{secrets.ANTHROPIC_API_KEY}}} 
         run: |
           curl -s https://api.anthropic.com/v1/models \
           -H "x-api-key: $ANTHROPIC_API_KEY" \
