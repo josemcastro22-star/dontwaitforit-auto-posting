@@ -1,19 +1,21 @@
-What if the spinal cord isn't as silent as we thought? 🔬
+What if your brain could talk to your legs again — wirelessly?
 
-Groundbreaking research using epidural electrical stimulation (EES) showed that people living with complete paralysis could voluntarily move their legs again — years after their injury.
+Researchers in Switzerland developed a brain–spine interface that translates thought into movement. A man paralyzed for over a decade was able to walk overground using this system.
 
-This doesn't mean a cure. But it does mean the nervous system retains more potential than once believed — and scientists are working hard to understand why.
+This isn't a cure. But it is a signal — that the nervous system retains more potential than we once believed, and that science is listening.
 
-Here's what the research found:
-✅ Targeted electrical pulses can reactivate spinal circuits
-✅ Voluntary movement returned in participants with long-standing injuries
-✅ Larger trials are now underway to test safety and scalability
+🔬 What the research showed:
+→ A wireless implant decoded motor intentions from the brain
+→ Targeted electrical stimulation activated leg muscles below the injury
+→ With training, some neurological recovery was observed even without the device
 
-Every study like this brings the SCI community one step closer to better options. 💙
+We share this because hope grounded in evidence matters. For the 18,000+ people who sustain a spinal cord injury in the U.S. each year, progress like this is personal.
 
-📖 Sources:
-• Gill et al., NEJM (2018): nejm.org/doi/10.1056/NEJMoa1803588
-• Wagner et al., Nature (2018): nature.com/articles/s41586-018-0649-2
-• NIH SPARC Program overview: sparc.science
+Follow along as we track the science — and the people behind it.
 
-#SpinalCordInjury #SCIResearch #ParalysisRecovery #EpiduralStimulation #NeuroRecovery #SCIAwareness #HopeForSCI #RehabScience
+📎 Sources:
+https://www.nature.com/articles/s41586-023-06094-5
+https://www.ninds.nih.gov/health-information/disorders/spinal-cord-injury
+https://www.nscisc.uab.edu/
+
+#SpinalCordInjury #SCIRecovery #Neuroprosthetics #BrainSpineInterface #ParalysisResearch #RehabTech #SCIAwareness
