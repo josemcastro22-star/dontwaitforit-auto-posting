@@ -79,9 +79,21 @@ headline, big_stat, bullets, source_line, caption
     text = "".join(
         [p.get("text", "") for p in data.get("content", []) if p.get("type") == "text"]
     ).strip()
-
+    
+    clean = text
+    
+    # Strip ```json ... ``` fences if present
+    if "```" in clean:
+        parts = clean.split("```")
+        if len(parts) >= 2:
+            clean = parts[1].lstrip()
+            if clean.lower().startswith("json"):
+                clean = clean[4:].lstrip()
+    
+    clean = clean.strip()
+    
     try:
-        return json.loads(text)
+        return json.loads(clean)
     except Exception:
         raise RuntimeError(f"Claude did not return valid JSON. Got:\n{text}")
 
