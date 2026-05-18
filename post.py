@@ -425,8 +425,8 @@ def main():
     for k in ["headline", "big_stat", "bullets", "caption"]:
         if k not in payload:
             raise RuntimeError(f"Missing key from Claude JSON: {k}")
-    if not isinstance(payload["bullets"], list) or len(payload["bullets"]) != 3:
-        raise RuntimeError("Claude JSON 'bullets' must be a list of exactly 3 items.")
+    if not isinstance(payload["bullets"], list) or len(payload["bullets"]) != 2:
+        raise RuntimeError("Claude JSON 'bullets' must be a list of exactly 2 items.")
 
     img_filename = write_outputs(payload, theme_name)
     pushed = git_commit_push(img_filename)
