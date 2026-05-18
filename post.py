@@ -281,22 +281,31 @@ def render_infographic(payload: dict, out_path: str, theme_name: str):
 def ensure_docs():
     os.makedirs("docs", exist_ok=True)
 
-def write_outputs(payload: dict, theme_name: str):
+def write_outputs(payload: dict, theme_name: str) -> str:
     ensure_docs()
-    img_path = "docs/latest.png"
+
+    stamp = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d_%H%M")
+    img_filename = f"post_{stamp}.png"
+
+    img_path = f"docs/{img_filename}"
     txt_path = "docs/latest.txt"
 
     render_infographic(payload, img_path, theme_name)
 
+    # optional: keep latest.png updated for preview
+    render_infographic(payload, "docs/latest.png", theme_name)
+
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(payload["caption"].strip() + "\n")
+
+    return img_filename
 
 def git_commit_push():
     subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
 
-    subprocess.run(["git", "add", "docs/latest.png", "docs/latest.txt"], check=True)
-
+    subprocess.run(["git", "add", "docs/*.png", "docs/latest.txt"], check=True)
+    
     # If nothing staged, do nothing
     r = subprocess.run(["git", "diff", "--cached", "--quiet"])
     if r.returncode == 0:
@@ -355,10 +364,10 @@ def main():
     if not isinstance(payload["bullets"], list) or len(payload["bullets"]) != 3:
         raise RuntimeError("Claude JSON 'bullets' must be a list of exactly 3 items.")
 
-    write_outputs(payload, theme_name)
+    img_filename = write_outputs(payload, theme_name)
     pushed = git_commit_push()
 
-    image_url = f"{pages_base}/latest.png"
+    image_url = f"{pages_base}/{img_filename}"
 
     # If we pushed a new image, give Pages a moment to serve it
     if pushed:
