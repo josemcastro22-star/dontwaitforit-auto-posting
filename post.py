@@ -270,8 +270,7 @@ def render_infographic(payload: dict, out_path: str, theme_name: str):
             y += bullet_font.size + 8
         y += 4
 
-    # source + embedded handle
-    d.text((x_pad, card_y1 - 80), payload["source_line"], font=source_font, fill=MUTED)
+    # Embedded handle
     d.text((x_pad, card_y1 - 45), HANDLE_TEXT, font=handle_font, fill=ORANGE)
 
     # bottom accent bar
@@ -397,7 +396,7 @@ def main():
     payload = anthropic_generate(anthropic_key)
 
     # Validate shape
-    for k in ["headline", "big_stat", "bullets", "source_line", "caption"]:
+    for k in ["headline", "big_stat", "bullets", "caption"]:
         if k not in payload:
             raise RuntimeError(f"Missing key from Claude JSON: {k}")
     if not isinstance(payload["bullets"], list) or len(payload["bullets"]) != 3:
