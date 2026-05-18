@@ -300,11 +300,14 @@ def write_outputs(payload: dict, theme_name: str) -> str:
 
     return img_filename
 
-def git_commit_push():
+def git_commit_push(img_filename: str):
     subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
     subprocess.run(["git", "config", "user.email", "github-actions[bot]@users.noreply.github.com"], check=True)
 
-    subprocess.run(["git", "add", "docs/*.png", "docs/latest.txt"], check=True)
+    subprocess.run(
+    ["git", "add", f"docs/{img_filename}", "docs/latest.png", "docs/latest.txt"],
+    check=True
+    )
     
     # If nothing staged, do nothing
     r = subprocess.run(["git", "diff", "--cached", "--quiet"])
@@ -348,6 +351,21 @@ def ig_publish(ig_user_id: str, access_token: str, creation_id: str) -> str:
         raise RuntimeError(f"Publish failed {r.status_code}: {r.text}")
     return r.json()["id"]
 
+def wait_for_image(url: str, timeout_sec: int = 180) -> None:
+    start = time.time()
+    last_status = None
+    while time.time() - start < timeout_sec:
+        try:
+            r = requests.get(url, timeout=20)
+            last_status = r.status_code
+            ctype = r.headers.get("Content-Type", "")
+            if r.status_code == 200 and ctype.startswith("image/"):
+                return
+        except Exception:
+            pass
+        time.sleep(8)
+    raise RuntimeError(f"Image not reachable as image within {timeout_sec}s. Last status={last_status}. URL={url}")
+    
 def main():
     ig_user_id = require_env("IG_USER_ID")
     ig_access_token = require_env("IG_ACCESS_TOKEN")
@@ -365,9 +383,10 @@ def main():
         raise RuntimeError("Claude JSON 'bullets' must be a list of exactly 3 items.")
 
     img_filename = write_outputs(payload, theme_name)
-    pushed = git_commit_push()
+    pushed = git_commit_push(img_filename)
 
     image_url = f"{pages_base}/{img_filename}"
+    wait_for_image(image_url, timeout_sec=240)
 
     # If we pushed a new image, give Pages a moment to serve it
     if pushed:
