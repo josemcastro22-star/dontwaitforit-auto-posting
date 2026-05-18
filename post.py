@@ -4,6 +4,8 @@ import json
 import time
 import subprocess
 import hashlib
+import random
+from pathlib import Path
 from zoneinfo import ZoneInfo
 from datetime import datetime, timezone
 
@@ -158,69 +160,133 @@ def wrap_text(draw, text, font, max_width):
         lines.append(" ".join(cur))
     return lines
 
-def render_infographic(payload: dict, out_path: str):
-    W, H = 1080, 1350
-    bg = (10, 12, 18)          # near-black
-    accent = (78, 255, 184)    # mint
-    white = (245, 245, 245)
-    muted = (170, 175, 185)
 
-    img = Image.new("RGB", (W, H), bg)
+HANDLE_TEXT = "@Dontwaitforit_Foundation"
+
+def pick_hero_svg(theme_name: str) -> str | None:
+    hero_dir = Path("assets/hero")
+    if not hero_dir.exists():
+        return None
+
+    files = [p for p in hero_dir.iterdir() if p.suffix.lower() == ".svg"]
+    if not files:
+        return None
+
+    name = theme_name.upper()
+
+    buckets = {
+        "MINDSET": ["meditat", "mindful", "mind", "yoga", "attitude", "positive", "community", "support"],
+        "DISCOVERY": ["research", "science", "ai", "dev", "doctor", "articles", "productivity", "lab"],
+        "ADAPTIVE_EQUIPMENT": ["devices", "online", "chat", "verify", "watching", "growing", "text"],
+        "SCI_STATS": ["data", "stats", "statistics", "analytics", "insights", "result", "visual", "investment"],
+    }
+
+    keys = buckets.get(name, [])
+    if keys:
+        candidates = [p for p in files if any(k in p.name.lower() for k in keys)]
+        if candidates:
+            return str(random.choice(candidates))
+
+    return str(random.choice(files))
+
+def svg_to_png(svg_path: str, png_path: str, width: int = 900) -> None:
+    subprocess.run(
+        ["rsvg-convert", "-w", str(width), "-o", png_path, svg_path],
+        check=True
+    )
+
+def render_infographic(payload: dict, out_path: str, theme_name: str):
+    W, H = 1080, 1350
+
+    NAVY_1 = (8, 18, 40)
+    NAVY_2 = (16, 32, 66)
+    ORANGE = (255, 122, 26)
+    INK    = (10, 12, 18)
+    MUTED  = (85, 95, 110)
+
+    # background gradient
+    bg = Image.new("RGB", (W, H), NAVY_1)
+    px = bg.load()
+    for y in range(H):
+        t = y / (H - 1)
+        r = int(NAVY_1[0] * (1 - t) + NAVY_2[0] * t)
+        g = int(NAVY_1[1] * (1 - t) + NAVY_2[1] * t)
+        b = int(NAVY_1[2] * (1 - t) + NAVY_2[2] * t)
+        for x in range(W):
+            px[x, y] = (r, g, b)
+
+    img = bg.convert("RGBA")
     d = ImageDraw.Draw(img)
 
-    headline_font = load_font(86)
-    stat_font = load_font(120)
-    bullet_font = load_font(48)
-    source_font = load_font(30)
+    # HERO (left)
+    hero_svg = pick_hero_svg(theme_name)
+    if hero_svg:
+        os.makedirs("docs", exist_ok=True)
+        tmp_png = "docs/_hero_tmp.png"
+        svg_to_png(hero_svg, tmp_png, width=860)
+        hero = Image.open(tmp_png).convert("RGBA")
 
-    # Accent bar
-    d.rectangle([0, 0, W, 22], fill=accent)
+        # place on left
+        img.alpha_composite(hero, (40, 220))
 
-    x_pad = 70
-    y = 70
+    # CARD (right)
+    card_x0, card_y0 = 560, 140
+    card_x1, card_y1 = 1030, 1190
 
-    # Headline
-    head_lines = wrap_text(d, payload["headline"].upper(), headline_font, W - 2 * x_pad)
+    d.rounded_rectangle([card_x0, card_y0, card_x1, card_y1], radius=44, fill=(255, 255, 255, 245))
+    d.rounded_rectangle([card_x0, card_y0, card_x1, card_y0 + 16], radius=12, fill=(ORANGE[0], ORANGE[1], ORANGE[2], 255))
+
+    headline_font = load_font(54)
+    stat_font = load_font(64)
+    bullet_font = load_font(34)
+    source_font = load_font(26)
+    handle_font = load_font(26)
+
+    x_pad = card_x0 + 34
+    y = card_y0 + 42
+    max_w = (card_x1 - card_x0) - 68
+
+    # headline
+    head_lines = wrap_text(d, payload["headline"].upper(), headline_font, max_w)
     for line in head_lines[:2]:
-        d.text((x_pad, y), line, font=headline_font, fill=white)
-        y += headline_font.size + 6
+        d.text((x_pad, y), line, font=headline_font, fill=INK)
+        y += headline_font.size + 4
 
-    y += 30
+    y += 10
 
-    # Big stat (center each line)
-    stat = payload["big_stat"].upper()
-    stat_lines = wrap_text(d, stat, stat_font, W - 2 * x_pad)
+    # big stat
+    stat_lines = wrap_text(d, payload["big_stat"], stat_font, max_w)
     for line in stat_lines[:3]:
-        line_w = d.textlength(line, font=stat_font)
-        d.text(((W - line_w) / 2, y), line, font=stat_font, fill=accent)
-        y += stat_font.size + 4
+        d.text((x_pad, y), line, font=stat_font, fill=ORANGE)
+        y += stat_font.size + 2
 
-    y += 35
+    y += 10
 
-    # Bullets
-    for b in payload["bullets"]:
-        b_lines = wrap_text(d, "• " + b, bullet_font, W - 2 * x_pad)
+    # bullets (2 only = cleaner)
+    for b in payload["bullets"][:2]:
+        b_lines = wrap_text(d, "• " + b, bullet_font, max_w)
         for line in b_lines:
-            d.text((x_pad, y), line, font=bullet_font, fill=white)
-            y += bullet_font.size + 10
-        y += 8
+            d.text((x_pad, y), line, font=bullet_font, fill=INK)
+            y += bullet_font.size + 8
+        y += 4
 
-    # Bottom ribbon with source
-    ribbon_h = 90
-    d.rectangle([0, H - ribbon_h, W, H], fill=(18, 22, 32))
-    d.text((x_pad, H - ribbon_h + 25), payload["source_line"], font=source_font, fill=muted)
+    # source + embedded handle
+    d.text((x_pad, card_y1 - 80), payload["source_line"], font=source_font, fill=MUTED)
+    d.text((x_pad, card_y1 - 45), HANDLE_TEXT, font=handle_font, fill=ORANGE)
 
-    img.save(out_path, format="PNG")
+    # bottom accent bar
+    d.rectangle([0, H - 8, W, H], fill=(ORANGE[0], ORANGE[1], ORANGE[2], 255))
 
+    img.convert("RGB").save(out_path, format="PNG")
 def ensure_docs():
     os.makedirs("docs", exist_ok=True)
 
-def write_outputs(payload: dict):
+def write_outputs(payload: dict, theme_name: str):
     ensure_docs()
     img_path = "docs/latest.png"
     txt_path = "docs/latest.txt"
 
-    render_infographic(payload, img_path)
+    render_infographic(payload, img_path, theme_name)
 
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(payload["caption"].strip() + "\n")
@@ -279,6 +345,7 @@ def main():
     anthropic_key = require_env("ANTHROPIC_API_KEY").strip()
     pages_base = require_env("PAGES_BASE_URL").rstrip("/")
 
+    theme_name, _ = weekday_theme()
     payload = anthropic_generate(anthropic_key)
 
     # Validate shape
@@ -288,7 +355,7 @@ def main():
     if not isinstance(payload["bullets"], list) or len(payload["bullets"]) != 3:
         raise RuntimeError("Claude JSON 'bullets' must be a list of exactly 3 items.")
 
-    write_outputs(payload)
+    write_outputs(payload, theme_name)
     pushed = git_commit_push()
 
     image_url = f"{pages_base}/latest.png"
