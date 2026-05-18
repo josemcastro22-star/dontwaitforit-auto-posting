@@ -346,10 +346,31 @@ def ig_create_container(ig_user_id: str, access_token: str, image_url: str, capt
 def ig_publish(ig_user_id: str, access_token: str, creation_id: str) -> str:
     url = f"{GRAPH_BASE}/{ig_user_id}/media_publish"
     data = {"creation_id": creation_id, "access_token": access_token}
-    r = requests.post(url, data=data, timeout=60)
-    if r.status_code != 200:
+
+    # Retry because IG sometimes needs time to finish processing the container
+    for attempt in range(1, 9):  # ~8 tries
+        r = requests.post(url, data=data, timeout=60)
+        if r.status_code == 200:
+            return r.json()["id"]
+
+        try:
+            err = r.json().get("error", {})
+        except Exception:
+            err = {}
+
+        sub = err.get("error_subcode")
+        msg = err.get("message", "")
+
+        # "Media not ready" -> wait and retry
+        if r.status_code == 400 and sub == 2207027:
+            wait = 5 * attempt  # 5s, 10s, 15s...
+            print(f"Publish not ready yet (attempt {attempt}). Waiting {wait}s...")
+            time.sleep(wait)
+            continue
+
         raise RuntimeError(f"Publish failed {r.status_code}: {r.text}")
-    return r.json()["id"]
+
+    raise RuntimeError("Publish failed: media never became ready after retries.")
 
 def wait_for_image(url: str, timeout_sec: int = 180) -> None:
     start = time.time()
