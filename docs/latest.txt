@@ -1,14 +1,12 @@
-Electrical stimulation below a spinal injury can wake up circuits once thought permanently silent.
+Flat tires are the #1 reported mechanical failure for manual wheelchair users — Loopwheels and newer entrants are pushing airless tech forward, but 2024 saw a notable step: Greentyre's airless foam-fill wheelchair tire line expanded to North American distributors, offering puncture immunity with reduced rolling resistance.
 
-Researchers at University of Louisville delivered continuous epidural electrical stimulation (EES) to 9 individuals with complete motor paralysis. All 9 regained voluntary leg movement during stimulation — and some retained function after it ended.
+An estimated 3.3 million wheelchair users in the U.S. rely on manual chairs daily. Tire failure causes falls, missed appointments, and lost independence — not a minor inconvenience.
 
-The spinal cord contains neural networks capable of reorganization. EES appears to amplify residual signals the brain is still sending, even when clinical tests show no detectable motor function.
-
-This does not mean a cure. It means the biology is more recoverable than standard diagnosis suggests — and that timing and protocol matter.
+Airless designs remove the pressure-maintenance burden entirely, critical for users with limited hand function.
 
 Sources:
-https://www.nejm.org/doi/full/10.1056/NEJMoa1803588
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6821047/
-https://kentuckyonehealth.org/epidural-stimulation
+https://www.greentyre.com/wheelchair
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5998519
+https://www.christopherreeve.org/living-with-paralysis/stats-about-paralysis
 
-#SpinalCordInjury #EpiduralStimulation #ParalysisResearch #SCIRecovery #NeuralPlasticity #MotorRecovery #SCIAwareness
+#SpinalCordInjury #WheelchairTech #AdaptiveEquipment #SCILife #ParalysisRecovery #AssistiveTechnology #WheelchairUsers
