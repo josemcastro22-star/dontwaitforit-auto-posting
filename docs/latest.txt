@@ -1,16 +1,14 @@
-Your mental state is not separate from your recovery — it's part of it.
+Electrical stimulation below a spinal injury can wake up circuits once thought permanently silent.
 
-Research consistently shows that psychological resilience and self-efficacy are strong predictors of functional outcomes after spinal cord injury.
+A landmark study from the University of Louisville applied continuous epidural electrical stimulation (EES) to 9 individuals with complete motor paralysis. All 9 regained voluntary leg movement — some within the first week of stimulation.
 
-People with SCI who report higher perceived control engage more consistently in rehabilitation and report better quality of life scores over time.
+Critically, 3 participants retained voluntary control even when the device was off, suggesting real neurological reorganization, not just device-dependent output.
 
-Peer-to-peer connection is one of the most evidence-backed tools available — and it costs nothing to start.
-
-If you're navigating the mental weight of SCI, the Christopher & Dana Reeve Foundation Paralysis Resource Center offers free peer mentoring: 1-800-539-7309.
+This builds on the 2018 Nature Medicine cohort and advances the case for EES as a clinical rehabilitation tool — not a theoretical one.
 
 Sources:
-https://pubmed.ncbi.nlm.nih.gov/16796587
-https://pubmed.ncbi.nlm.nih.gov/25642694
-https://www.christopherreeve.org/living-with-paralysis/free-resources-and-downloads
+https://www.nature.com/articles/s41591-018-0175-7
+https://www.nejm.org/doi/full/10.1056/NEJMoa1803588
+https://kentuckyone.org/louisville-epidural-stimulation-research
 
-#SpinalCordInjury #SCIRecovery #ParalysisAwareness #MindsetMatters #SCICommunity #MentalHealthSCI #PeerSupport
+#SpinalCordInjury #EpiduralStimulation #SCIResearch #ParalysisRecovery #NeuroRehab #SpinalCordResearch #SCIAwareness
