@@ -34,7 +34,7 @@ async def generate_infographic(storage_path, output_path):
         notebook = await client.notebooks.get(NOTEBOOK_ID)
         infographic = await client.artifacts.generate_infographic(
             notebook_id=NOTEBOOK_ID,
-            prompt=prompt,
+            instructions=prompt,
             orientation="portrait",
         )
         await infographic.download(output_path)
