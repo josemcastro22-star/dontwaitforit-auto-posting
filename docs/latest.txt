@@ -1,14 +1,14 @@
-Electrical stimulation below a spinal injury can wake up circuits once thought permanently silent.
+A wireless brain-spine interface let a man with complete thoracic SCI walk again — not via robotics, but his own muscles.
 
-A landmark study from the University of Louisville applied continuous epidural electrical stimulation (EES) to 9 individuals with complete motor paralysis. All 9 regained voluntary leg movement — some within the first week of stimulation.
+Researchers at EPFL implanted a brain decoder + spinal stimulator that translate motor-cortex signals into targeted leg movements with ~100ms latency.
 
-Critically, 3 participants retained voluntary control even when the device was off, suggesting real neurological reorganization, not just device-dependent output.
+The participant walked over 100 meters continuously and retained improved function even when the device was off — suggesting neuroplastic rewiring.
 
-This builds on the 2018 Nature Medicine cohort and advances the case for EES as a clinical rehabilitation tool — not a theoretical one.
+This is a proof-of-concept in N=1. Larger trials are underway.
 
 Sources:
-https://www.nature.com/articles/s41591-018-0175-7
-https://www.nejm.org/doi/full/10.1056/NEJMoa1803588
-https://kentuckyone.org/louisville-epidural-stimulation-research
+https://www.nature.com/articles/s41586-023-06094-5
+https://www.epfl.ch/research/domains/neuroscience/brain-spine-interface/
+https://clinicaltrials.gov/study/NCT05699447
 
-#SpinalCordInjury #EpiduralStimulation #SCIResearch #ParalysisRecovery #NeuroRehab #SpinalCordResearch #SCIAwareness
+#SpinalCordInjury #SCIResearch #Neuroprosthetics #BrainSpineInterface #ParalysisRecovery #EpiduralStimulation #SCIAwareness
