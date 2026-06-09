@@ -37,7 +37,16 @@ async def generate_infographic(storage_path, output_path):
             instructions=prompt,
             orientation=None,
         )
-        await infographic.download(output_path)
+        import httpx as _httpx
+    while status.is_in_progress or status.is_pending:
+        await asyncio.sleep(5)
+    if not status.url:
+        raise RuntimeError(f"Infographic failed: {status.error}")
+    async with _httpx.AsyncClient() as http:
+        r = await http.get(status.url)
+        r.raise_for_status()
+        with open(output_path, "wb") as f2:
+            f2.write(r.content)
     return output_path
 
 def resize_for_instagram(input_path, output_path):
