@@ -29,7 +29,7 @@ async def generate_infographic(storage_path, output_path):
     weekday = datetime.utcnow().weekday()
     prompt = DAILY_PROMPTS.get(weekday, DAILY_PROMPTS[0])
     print(f"Day: {weekday}, Prompt: {prompt[:60]}...")
-    auth = await AuthTokens.from_storage(storage_path)
+    auth = await AuthTokens.from_storage(Path(storage_path))
     async with NotebookLMClient(auth) as client:
         notebook = await client.notebooks.get(NOTEBOOK_ID)
         infographic = await client.artifacts.create_infographic(
