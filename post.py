@@ -223,86 +223,81 @@ def svg_to_png(svg_path: str, png_path: str, width: int = 900) -> None:
 
 def render_infographic(payload: dict, out_path: str, theme_name: str):
     W, H = 1080, 1350
+    NAVY_1 = (6, 15, 35)
+    NAVY_2 = (12, 28, 60)
+    ORANGE = (255, 115, 20)
+    WHITE  = (255, 255, 255)
+    LGRAY  = (200, 210, 225)
+    DGRAY  = (140, 155, 175)
 
-    NAVY_1 = (8, 18, 40)
-    NAVY_2 = (16, 32, 66)
-    ORANGE = (255, 122, 26)
-    INK    = (10, 12, 18)
-    MUTED  = (85, 95, 110)
-
-    # background gradient
     bg = Image.new("RGB", (W, H), NAVY_1)
     px = bg.load()
     for y in range(H):
         t = y / (H - 1)
-        r = int(NAVY_1[0] * (1 - t) + NAVY_2[0] * t)
-        g = int(NAVY_1[1] * (1 - t) + NAVY_2[1] * t)
-        b = int(NAVY_1[2] * (1 - t) + NAVY_2[2] * t)
+        r = int(NAVY_1[0]*(1-t) + NAVY_2[0]*t)
+        g = int(NAVY_1[1]*(1-t) + NAVY_2[1]*t)
+        b = int(NAVY_1[2]*(1-t) + NAVY_2[2]*t)
         for x in range(W):
             px[x, y] = (r, g, b)
 
     img = bg.convert("RGBA")
     d = ImageDraw.Draw(img)
 
-    # HERO (left)
-    hero_svg = pick_hero_svg(theme_name)
-    if hero_svg:
-        os.makedirs("docs", exist_ok=True)
-        tmp_png = "docs/_hero_tmp.png"
-        svg_to_png(hero_svg, tmp_png, width=860)
-        hero = Image.open(tmp_png).convert("RGBA")
+    f_huge   = load_font(110)
+    f_large  = load_font(72)
+    f_small  = load_font(40)
+    f_tiny   = load_font(30)
+    f_handle = load_font(32)
 
-        # place on left
-        img.alpha_composite(hero, (40, 220))
+    PAD = 70
+    y = 80
 
-    # CARD (right)
-    card_x0, card_y0 = 560, 140
-    card_x1, card_y1 = 1030, 1190
+    d.rectangle([0, 0, W, 14], fill=ORANGE)
+    d.text((PAD, y), "@Dontwaitforit_Foundation", font=f_tiny, fill=ORANGE)
+    y += 55
+    d.rectangle([PAD, y, W-PAD, y+3], fill=(ORANGE[0], ORANGE[1], ORANGE[2], 120))
+    y += 28
 
-    d.rounded_rectangle([card_x0, card_y0, card_x1, card_y1], radius=44, fill=(255, 255, 255, 245))
-    d.rounded_rectangle([card_x0, card_y0, card_x1, card_y0 + 16], radius=12, fill=(ORANGE[0], ORANGE[1], ORANGE[2], 255))
+    badge_text = theme_name.replace("_", " ").upper()
+    d.text((PAD, y), badge_text, font=f_tiny, fill=DGRAY)
+    y += 55
 
-    headline_font = load_font(54)
-    stat_font = load_font(64)
-    bullet_font = load_font(34)
-    source_font = load_font(26)
-    handle_font = load_font(26)
+    headline = payload["headline"].upper()
+    head_lines = wrap_text(d, headline, f_large, W - PAD*2)
+    for line in head_lines[:3]:
+        d.text((PAD, y), line, font=f_large, fill=WHITE)
+        y += f_large.size + 8
+    y += 20
 
-    x_pad = card_x0 + 34
-    y = card_y0 + 42
-    max_w = (card_x1 - card_x0) - 68
+    d.rectangle([PAD, y, PAD+120, y+8], fill=ORANGE)
+    y += 50
 
-    # headline
-    head_lines = wrap_text(d, payload["headline"].upper(), headline_font, max_w)
-    for line in head_lines[:2]:
-        d.text((x_pad, y), line, font=headline_font, fill=INK)
-        y += headline_font.size + 4
+    stat = payload["big_stat"]
+    stat_lines = wrap_text(d, stat, f_huge, W - PAD*2)
+    for line in stat_lines[:2]:
+        d.text((PAD, y), line, font=f_huge, fill=ORANGE)
+        y += f_huge.size + 10
+    y += 30
 
-    y += 10
+    d.rectangle([PAD, y, W-PAD, y+2], fill=(255,255,255,40))
+    y += 40
 
-    # big stat
-    stat_lines = wrap_text(d, payload["big_stat"], stat_font, max_w)
-    for line in stat_lines[:3]:
-        d.text((x_pad, y), line, font=stat_font, fill=ORANGE)
-        y += stat_font.size + 2
+    for bullet in payload["bullets"][:2]:
+        d.ellipse([PAD, y+14, PAD+18, y+32], fill=ORANGE)
+        b_lines = wrap_text(d, bullet, f_small, W - PAD*2 - 40)
+        for i, line in enumerate(b_lines):
+            d.text((PAD+34, y), line, font=f_small, fill=WHITE if i==0 else LGRAY)
+            y += f_small.size + 6
+        y += 24
 
-    y += 10
-
-    # bullets (2 only = cleaner)
-    for b in payload["bullets"][:2]:
-        b_lines = wrap_text(d, "• " + b, bullet_font, max_w)
-        for line in b_lines:
-            d.text((x_pad, y), line, font=bullet_font, fill=INK)
-            y += bullet_font.size + 8
-        y += 4
-
-    # Embedded handle
-    d.text((x_pad, card_y1 - 45), HANDLE_TEXT, font=handle_font, fill=ORANGE)
-
-    # bottom accent bar
-    d.rectangle([0, H - 8, W, H], fill=(ORANGE[0], ORANGE[1], ORANGE[2], 255))
+    card_y = H - 200
+    d.rectangle([0, card_y, W, H-20], fill=(8, 18, 42))
+    d.text((PAD, card_y+35), "Don't Wait For It  |  dontwaitforit.org", font=f_handle, fill=ORANGE)
+    d.text((PAD, card_y+85), "Helping SCI survivors access therapy & equipment.", font=f_tiny, fill=LGRAY)
+    d.rectangle([0, H-20, W, H], fill=ORANGE)
 
     img.convert("RGB").save(out_path, format="PNG")
+
 def ensure_docs():
     os.makedirs("docs", exist_ok=True)
 
