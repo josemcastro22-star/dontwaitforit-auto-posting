@@ -32,7 +32,7 @@ async def generate_infographic(storage_path, output_path):
     auth = await AuthTokens.from_storage(Path(storage_path))
     async with NotebookLMClient(auth) as client:
         notebook = await client.notebooks.get(NOTEBOOK_ID)
-        infographic = await client.artifacts.create_infographic(
+        infographic = await client.artifacts.generate_infographic(
             notebook_id=NOTEBOOK_ID,
             prompt=prompt,
             orientation="portrait",
