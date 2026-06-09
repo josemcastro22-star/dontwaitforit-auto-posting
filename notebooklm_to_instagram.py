@@ -39,7 +39,7 @@ async def generate_infographic(storage_path, output_path):
         )
         import httpx as _httpx
     # Wait for infographic then download
-    completed = await client.artifacts.wait_for_completion(status)
+    completed = await client.artifacts.wait_for_completion(status.task_id)
     await client.artifacts.download_infographic(NOTEBOOK_ID, output_path, artifact_id=completed.task_id)
     return output_path
 
