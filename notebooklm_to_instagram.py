@@ -31,11 +31,11 @@ def load_cookies():
     return tmp.name
 
 def generate_infographic(cookies_path, output_path):
-    from notebooklm import Client as NotebookLM
+    from notebooklm import NotebookLMClient
     weekday = datetime.utcnow().weekday()
     prompt = DAILY_PROMPTS.get(weekday, DAILY_PROMPTS[0])
     print(f"Day: {weekday}, Prompt: {prompt[:60]}...")
-    nlm = NotebookLM(cookies=cookies_path)
+    nlm = NotebookLMClient(cookies=cookies_path)
     notebook = nlm.get_notebook(NOTEBOOK_ID)
     infographic = notebook.generate(kind="infographic", prompt=prompt, orientation="portrait", wait=True, timeout=180)
     infographic.download(output_path)
