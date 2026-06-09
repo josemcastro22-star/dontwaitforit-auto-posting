@@ -1,14 +1,14 @@
-Electrical stimulation below a spinal injury can wake up circuits once thought permanently silent.
+A digital bridge between brain and spine gave a paralyzed man voluntary movement again — a decade after his injury.
 
-A landmark study from the University of Louisville applied continuous epidural electrical stimulation (EES) to 9 individuals with complete motor paralysis. All 9 regained voluntary leg movement — some within the first week of stimulation.
+Researchers at EPFL implanted electrodes in the brain and spinal cord, creating a real-time wireless link that bypasses the injury site. The participant, paralyzed for 10 years after a cycling accident, regained controlled walking within the first training session.
 
-Critically, 3 participants retained voluntary control even when the device was off, suggesting real neurological reorganization, not just device-dependent output.
+The system uses predictive AI to decode motor intent and deliver precise epidural stimulation below the lesion — no manual calibration required during use.
 
-This builds on the 2018 Nature Medicine cohort and advances the case for EES as a clinical rehabilitation tool — not a theoretical one.
+This is not a cure. It is a proof-of-concept with n=1. Larger trials are ongoing.
 
 Sources:
-https://www.nature.com/articles/s41591-018-0175-7
-https://www.nejm.org/doi/full/10.1056/NEJMoa1803588
-https://kentuckyone.org/louisville-epidural-stimulation-research
+nature.com/articles/s41586-023-06094-5
+clinicaltrials.gov/study/NCT02936453
+epfl.ch/research/operandi/brain-spine-interface
 
-#SpinalCordInjury #EpiduralStimulation #SCIResearch #ParalysisRecovery #NeuroRehab #SpinalCordResearch #SCIAwareness
+#SpinalCordInjury #SCIResearch #Neuroprosthetics #BrainSpineInterface #ParalysisRecovery #EpiduralStimulation #SCIAwareness
