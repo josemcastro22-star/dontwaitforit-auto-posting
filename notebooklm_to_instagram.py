@@ -38,7 +38,9 @@ async def generate_infographic(storage_path, output_path):
             orientation=None,
         )
         import httpx as _httpx
-    await client.artifacts.download_infographic(status.task_id, output_path)
+    # Wait for infographic then download
+    completed = await client.artifacts.wait_for_completion(status)
+    await client.artifacts.download_infographic(NOTEBOOK_ID, output_path, artifact_id=completed.task_id)
     return output_path
 
 def resize_for_instagram(input_path, output_path):
