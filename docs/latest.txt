@@ -1,13 +1,12 @@
-A digital bridge between brain and spinal cord restored intentional walking in a man with complete thoracic paralysis.
+Shoulder injuries affect up to 73% of manual wheelchair users over time — new pushrim sensor tech is changing that math.
 
-Researchers at EPFL implanted epidural electrodes targeting lumbar locomotor regions, paired with a cortical recording implant. The system decoded intended movement and delivered targeted stimulation within milliseconds — no wired tether, no external robotics.
+SmartWheel and next-gen successors embed force/torque sensors directly into pushrims, streaming biomechanical data to a paired app in real time. Clinicians and users can identify high-risk stroke mechanics before cumulative damage sets in. Studies show biofeedback-guided training reduces peak shoulder load by roughly 40% within 8 weeks.
 
-The participant walked overground, climbed stairs, and navigated ramps. Neurological recovery also persisted even when the device was off.
-
-This is a peer-reviewed result published in Nature, 2023.
+This is preventive engineering, not a workaround.
 
 Sources:
-https://www.nature.com/articles/s41586-023-06094-5
-https://www.epfl.ch/research/domains/neuroprosthetics
+https://pubmed.ncbi.nlm.nih.gov/16557284
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5494924
+https://www.wheelchairnet.org/WCN_ProdServ/Docs/SmartWheel
 
-#SpinalCordInjury #SCIResearch #Neuroprosthetics #BrainSpineInterface #ParalysisRecovery #EpiduralStimulation #SCIAwareness
+#SCI #SpinalCordInjury #WheelchairTech #AdaptiveEquipment #Paralysis #SCIRecovery #AssistiveTechnology
