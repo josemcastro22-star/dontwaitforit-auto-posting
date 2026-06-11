@@ -1,12 +1,13 @@
-Shoulder injuries affect up to 73% of manual wheelchair users over time — new pushrim sensor tech is changing that math.
+Spinal cord injuries don't discriminate — and the numbers make that clear.
 
-SmartWheel and next-gen successors embed force/torque sensors directly into pushrims, streaming biomechanical data to a paired app in real time. Clinicians and users can identify high-risk stroke mechanics before cumulative damage sets in. Studies show biofeedback-guided training reduces peak shoulder load by roughly 40% within 8 weeks.
+Approximately 18,000 Americans sustain a new SCI each year. That's roughly 49 people every single day.
 
-This is preventive engineering, not a workaround.
+An estimated 302,000 people in the U.S. are currently living with SCI. Falls and vehicle crashes remain the two leading causes.
+
+Awareness drives funding. Funding drives research.
 
 Sources:
-https://pubmed.ncbi.nlm.nih.gov/16557284
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5494924
-https://www.wheelchairnet.org/WCN_ProdServ/Docs/SmartWheel
+https://www.nscisc.uab.edu/Public/Facts%20and%20Figures%202023.pdf
+https://www.christopherreeve.org/research/facts-and-stats
 
-#SCI #SpinalCordInjury #WheelchairTech #AdaptiveEquipment #Paralysis #SCIRecovery #AssistiveTechnology
+#SpinalCordInjury #SCIAwareness #ParalysisRecovery #SCIStats #SpinalCordInjuryAwareness #RehabResearch #SCICommunity
